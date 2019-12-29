@@ -1,0 +1,56 @@
+site_name: MyBlog
+nav:
+  - Home: index.md
+  - About: about.md
+theme:
+  name: 'material'
+  palette:
+    primary: 'Indigo'
+  font:
+    text: 'Fira Code'
+  logo:
+    icon: 'pages'
+  language: 'en'
+  feature:
+    tabs: false
+extra:
+  social:
+    - type: 'github'
+      link: 'https://github.com/RileyMShea'
+    - type: 'linkedin'
+      link: 'https://www.linkedin.com/in/riley-s-04393667/'
+extra_javascript:
+  - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+      linenums: true
+  - toc:
+      permalink: true
+      baselevel: 3
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: none
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:pymdownx.emoji.twemoji
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+plugins:
+  - search
+  - minify:
+      minify_html: true
+#  - pheasant
+#  - git-revision-date-localized
+#  type: timeago
+#  locale: en
