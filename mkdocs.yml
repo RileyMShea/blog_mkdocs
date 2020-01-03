@@ -2,6 +2,11 @@ site_name: MyBlog
 nav:
   - Home: index.md
   - About: about.md
+  - 2019:
+      - "Guide: Oracle 12c on Docker": 2019/oracle_12c_docker.md
+  - 2020:
+      - Oracle:
+          - "First attempt notes": 2020/Oracle/post_attempt_1_notes.md
 theme:
   name: 'material'
   palette:

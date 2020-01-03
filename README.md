@@ -1,3 +1,4 @@
 # My MkDocs Blog
 
-Site available at TBD
+Blog WIP, available at: `TBD`
+
