@@ -11,5 +11,12 @@
         <property name="TNSADMIN_DIR" value="$USER_HOME$/development/oracle" />
       </jdbc-additional-properties>
     </data-source>
+    <data-source source="LOCAL" name="EDQ_Oracle" uuid="28ba268d-cba9-4a4e-9150-eb0c64c6de1c">
+      <driver-ref>oracle</driver-ref>
+      <synchronize>true</synchronize>
+      <auto-commit>false</auto-commit>
+      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@localhost:1521:orcl</jdbc-url>
+    </data-source>
   </component>
 </project>

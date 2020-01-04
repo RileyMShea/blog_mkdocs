@@ -1,18 +1,44 @@
 # Things found in exam questions from my my first attempt
 
+```sql
+select MGR, COUNT(*), COUNT(EMPNO)
+from emp
+group by MGR
+HAVING COUNT(*) > 3;
+/*
++----+--------+------------+
+|MGR |COUNT(*)|COUNT(EMPNO)|
++----+--------+------------+
+|NULL|4       |4           |
+|7698|4       |4           |
++----+--------+------------+
+*/
+```
+
+
+
 
 * How/where `COUNT(*)` works in different places of the select:
     * They will try to put `COUNT(*)` in every conceivable place of every statement
+    
+
 * Merge statements, exact flow
      * where the source and target table can be referenced
      * What is valid `WHEN MATCHED` , `WHEN NOT MATCHED`
 * How `EXISTS` works with an alias to the outer table and no alias for the subquery inner table
 * select 2 from dual a cross join dual b cross join dual c;
-* How multiple single quotes work with `||` , `concat()`
-    * `'''''`,(4 singles; which ones are escaped?)
-    *  `'''` , (3 singles quotes; which ones are escaped)
 
-* `HAVING` before or without  `GROUP BY`
+## How multiple single quotes work with `||` , `concat()`
+
+https://docs.oracle.com/database/121/SQLRF/sql_elements003.htm#i42617
+
+* `'''''`,(4 singles; which ones are escaped?)
+*  `'''` , (3 singles quotes; which ones are escaped)
+
+* `HAVING`[^1] before or without  `GROUP BY`
+
+
+
 * Nested aggregations `MAX(COUNT(*))`
 * `INSTR` with a `' '` parameter
 
@@ -27,10 +53,155 @@ FROM EMP;
 * LIKE '%mc' or 'MC'
 * Knowing exactly what can be done to a read only table
 * Set operators second table datatypes need to match? or be in same group only?
-* how to specify Intervals inline
-    * 'DAY' 'YEAR', AS DAY TO SECOND, as hour to min, as hour to second,
-        * '12:00'? '12 00'? 12:00:00? 
-* adding fractions (ie 0.5) to a DATE date type
+
+# Interval Literals 
+
+Oracle 12c Interval Literals Docs[^2]
+
+Seeking to answer valid ways to specify interval literals to from questions I was unsure of on
+the exam.
+
+#### How to format the strings that go into Interval literals? Things like:
+
+* `DAY` `YEAR`, `AS DAY TO SECOND`, `as hour to min`, `as hour to second`
+* `12:00`, `12 00`, `12:00:00`?
+
+!!! Note "Interval Precisions"
+
+    Much like other data types, time intervals have default precision values that can't be exceeded
+    by default.
+    
+    #### YEAR, MONTH, DAY, HOUR, and MINUTE:
+    
+    * Default precision: 2
+    * Min precision: 0
+    * Max Precsion: 9
+    * Whole numbers as strings only, no decimals
+    * Zeros can exceed precede other digits up to 9 ignoring actual precision
+    * EACH keyword is ^^NOT^^ plural: ie using `DAYS` instead of `DAY` will throw an error
+    
+    #### SECOND ( ^^**HEAVILY**^^ differs from the previous `INTERVAL` literals):
+    Encouraged to read the [offical docs on SECOND](https://docs.oracle.com/database/121/SQLRF/sql_elements003.htm#SQLRF00221)
+    
+    Get ready for a mind-fuck
+    
+    There is now ^^**two**^^ possible precisions: `leading precision` and `fractional_seconds_precision`
+    
+    ### `leading_precision`
+    
+    * How many digits are available for the whole number
+    * Default: 7
+        * You won't find this number in any docs, but I tested it, and that's what it is :shrug:
+    * Min: 0
+    * Max: 9
+    * Will never accept more than 9 digits(left of the decimal) regardless of precision
+        * `#!sql 123456789 SECONDS(9)` will work
+        * `#!sql 000000012 SECONDS(2)` will work. Zeros are "ignored" against precision
+        * `#!sql 0000000012 SECONDS(2)` ^^won't^^ work. Soft limit on accepting 9 digits
+            * The exception to the soft limit of 9 digits is a string of ^^only zeros
+            ```sql
+            --Allows 60 zeroes before returning bad datetime/interval value error
+            SELECT INTERVAL '0000000000000000000000000000000000000000000000000000000000000' DAY(0) FROM DUAL;
+            ```
+    
+    
+    ### `fractional_seconds_precision`   
+     
+    * Default fractional_seconds_precision: ==**6**==
+    !!! note 
+        This is  ^^only^^ limiting the total fractional seconds stored in the interval.
+        
+        * It is ^^NOT^^ a limit that will cause an error.
+        * It is ^^NOT^^ like scale for `#!sql NUMBER(7,2)`
+        
+        The ONLY thing fractional_seconds_precision does, is to limit and round to the number specified
+        
+    * Min precision: 0 ( [Official 12c documentation](https://docs.oracle.com/database/121/SQLRF/sql_elements003.htm#SQLRF00221) says `1`) 
+    
+        !!! quote
+        
+            > `fractional_seconds_precision` is the number of digits in the fractional part of the SECOND datetime field. Accepted values are 1 to 9. The default is 6. 
+        
+        * `#!sql select INTERVAL '0.123456789' SECOND(0,0) from dual;` works for me on my Oracle 12c 
+        ```sql
+        /*
+        
+        Connected to:
+        Oracle Database 12c Enterprise Edition Release 12.1.0.1.0 - 64bit Production
+        
+        SQL> select INTERVAL '0.123456789' SECOND(0,0) from dual;
+
+        INTERVAL'0.12345678
+        -------------------
+        +00 00:00:00.000000
+        */
+        ```
+
+    * Max Precsion: 9
+    * ==^^Can^^ use decimals==
+    
+    !!! warning "`SECOND` Does ^^NOT^^ behave like `NUMBER`"
+    
+    
+    
+    
+General form is:
+
+`INTERVAL` quoted_number interval type
+
+
+!!! Success "Working Examples"
+    ```sql
+    select INTERVAL '5' DAY from dual;
+    select INTERVAL '5' YEAR from dual;
+    select INTERVAL '5.555555' from dual;
+    ```
+!!! warning "Example Errors: *Almost* Correct"
+    ```sql
+    select INTERVAL '5' MINUTE TO DAY from dual;
+    ```
+    
+    ??? faq "Why is this *almost* correct?"
+        Smaller time interval can't come before bigger time-interval
+        
+    ```sql
+    select INTERVAL '5.555555' from dual;
+    ```
+    
+    ??? faq "Why is this *almost* correct?"
+        Missing the actual `INTERVAL` type (ie `DAY` ... `SECOND`)
+        
+    ```sql
+    
+    ```
+    
+    ??? faq "Why is this *almost* correct?"
+        TODO
+    
+    
+    
+    ```sql
+    select INTERVAL '533' day(3,2) from dual;
+    ```
+!!! danger "Examples: Unintended Output!"
+    ```sql
+    select '5' day from dual;
+    ```
+    
+    ??? faq "Why is the output unintended?"
+        The intention appears to get a `#!sql INTERVAL '5' DAY` but without the `INTERVAL`
+        keyword it's just a `NUMBER` with a column alias of DAY.  Oracle allows this because 
+        `DAY` is a keyword, but not a **RESERVED** keyword[^3]
+        
+        | DAY |
+        | :--- |
+        | 5 |
+
+
+        
+        
+        
+* adding decimals (ie 0.5) to a DATE date type
 * different queries to get the same result
 * Full outer with (+)'s
 * Speed of Join
@@ -79,4 +250,6 @@ since many questions are: which two/three of these have the same result
 
 
 
-
+[^1]: https://docs.oracle.com/database/121/SQLRF/statements_10002.htm#i2078943
+[^2]: Inline Intervals: https://www.oracletutorial.com/oracle-basics/oracle-interval/
+[^3]: Reserved Keywords: https://docs.oracle.com/database/121/SQLRF/ap_keywd001.htm#SQLRF55621

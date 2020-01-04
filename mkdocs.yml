@@ -6,13 +6,15 @@ nav:
       - "Guide: Oracle 12c on Docker": 2019/oracle_12c_docker.md
   - 2020:
       - Oracle:
+          - "Documentation Links": 2020/Oracle/Documentation_links.md
           - "First attempt notes": 2020/Oracle/post_attempt_1_notes.md
 theme:
   name: 'material'
   palette:
     primary: 'Indigo'
   font:
-    text: 'Fira Code'
+    text: 'Ubuntu'
+    code: 'Fira Code'
   logo:
     icon: 'pages'
   language: 'en'
@@ -31,10 +33,11 @@ markdown_extensions:
   - codehilite:
       guess_lang: false
       linenums: true
+  - footnotes
   - toc:
       permalink: true
       baselevel: 3
-  - pymdownx.arithmatex
+#  - pymdownx.arithmatex
   - pymdownx.betterem:
       smart_enable: none
   - pymdownx.caret
