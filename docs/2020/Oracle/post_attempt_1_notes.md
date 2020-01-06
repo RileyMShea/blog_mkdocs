@@ -1,11 +1,45 @@
 # Things found in exam questions from my my first attempt
+---
+
+After taking my first C993 exam attempt, I jotted down key areas/concepts from the
+exam which I didn't know or was unsure of.  Everything in this page is derived from those notes so
+all the content on this page could theoretically show up as an exam question.
+
+!!! warning "Legal Disclaimer"
+    I did not write down any questions from the exam.  These are are general observations I remember from
+    the exam.  I am not reproducing any exam questions here.  These writings are my own and do not
+    reflect the opinions of Oracle(c) or WGU(c).  
+ 
+
+
+
+
+
+
+
+
+
+# How/where `COUNT(*)` works in different places of a query:
+---
+[Oracle 12c Official COUNT Docs](https://docs.oracle.com/database/121/SQLRF/functions046.htm#SQLRF00624)
+
+They will try to put `COUNT(*)` in every conceivable place, of every query.
+
+### Know how `COUNT(*)` works:
+
+* In the `SELECT` only:
+    * Counts every single row in a table, ^^including^^ `<null>`'s
+* In the `GROUP BY`:
+    
+    
 
 ```sql
+--In the SELECT and HAVING
 select MGR, COUNT(*), COUNT(EMPNO)
 from emp
 group by MGR
 HAVING COUNT(*) > 3;
-/*
+/* Output
 +----+--------+------------+
 |MGR |COUNT(*)|COUNT(EMPNO)|
 +----+--------+------------+
@@ -15,24 +49,95 @@ HAVING COUNT(*) > 3;
 */
 ```
 
-
-
-
-* How/where `COUNT(*)` works in different places of the select:
-    * They will try to put `COUNT(*)` in every conceivable place of every statement
-    
-
 * Merge statements, exact flow
      * where the source and target table can be referenced
      * What is valid `WHEN MATCHED` , `WHEN NOT MATCHED`
 * How `EXISTS` works with an alias to the outer table and no alias for the subquery inner table
 * select 2 from dual a cross join dual b cross join dual c;
 
-## How multiple single quotes work with `||` , `concat()`
+# Multiple single quotes
 
-https://docs.oracle.com/database/121/SQLRF/sql_elements003.htm#i42617
+This section might seem a little insane.  If you're wondering if it's worth studying this, I had one question
+from my last attempt that really wanted to make sure you knew how many single quotes, in what order,
+would create a desired result vs an error. 
 
-* `'''''`,(4 singles; which ones are escaped?)
+
+Quote Docs: https://docs.oracle.com/database/121/SQLRF/sql_elements003.htm#i42617
+
+TODO: add more with quote escapes combined with `||` , `concat()`
+
+!!! info "4 singles quotes, which ones are escaped?"
+    
+    
+    ```sql
+    select '''' quote_escapes
+    from dual;
+    ```
+    
+    | QUOTE\_ESCAPES |
+    | :--- |
+    | ' |
+
+    !!! info "Breakdown"
+        * `{++'++}'''` The first quote char starts the string.
+        *  `'{++''++}'` Next, Oracle see's the 2nd and third singles(`''`).  This is processed as an escaped single(`'`).
+        *  `'''{++'++}` Finally, the last quote is processed. It isn't part of a pair, so it closes the string.
+        
+    A single-quote is returned.
+    
+    2 outer singles hold one escaped single(doubled for escape) 
+    
+!!! info "4 singles quotes... again?, which ones are escaped?"
+    
+    
+    ```sql
+    select '' '' quote_escapes
+    from dual;
+    ```
+    
+    !!! error "Result: Error"
+    
+        This time no quote escapes are attempted
+        
+        * `{++''++} ''` The first pair is a complete string.  It evaluates to `<null>` though because Oracle
+        doesn't believe in empty strings :shrug:
+        * `'' {++''++}` The second pair is also a complete string.
+        * The problem is that the strings need either a `||` or `#!sql concat to be joined`
+        
+        !!! success "Possible Fixes"
+        
+            ```sql
+            select '' || '' quote_escapes from dual;
+            ```
+            
+            ```sql
+            select concat('', '') quote_escapes from dual;
+            ```
+            
+            ```sql
+            select ' '' ' quote_escapes from dual;
+            /*
+            This example returns a single quote.
+            */
+            ```
+            
+        
+!!! info "3 singles quotes, which ones are escaped?"
+    
+    
+    ```sql
+    select ''' quote_escapes
+    from dual;
+    ```
+    
+    !!! error "Result: Error"
+        * `{++'++}''` The first quote char starts the string.
+        *  `'{++''++}` Next Oracle see's the 2nd and third singles(`''`).  This is processed as an escaped single(`'`).
+        * Since all thee single quotes have been processed, there is no closing quote.  An error results.
+        
+
+    
+    
 *  `'''` , (3 singles quotes; which ones are escaped)
 
 * `HAVING`[^1] before or without  `GROUP BY`
@@ -71,7 +176,7 @@ the exam.
     Much like other data types, time intervals have default precision values that can't be exceeded
     by default.
     
-    #### YEAR, MONTH, DAY, HOUR, and MINUTE:
+    ## `INTERVAL` literals: `YEAR`, `MONTH`, `DAY`, `HOUR`, and `MINUTE`:
     
     * Default precision: 2
     * Min precision: 0
@@ -80,7 +185,7 @@ the exam.
     * Zeros can exceed precede other digits up to 9 ignoring actual precision
     * EACH keyword is ^^NOT^^ plural: ie using `DAYS` instead of `DAY` will throw an error
     
-    #### SECOND ( ^^**HEAVILY**^^ differs from the previous `INTERVAL` literals):
+    ## `INTERVAL` literals: `SECOND` ( ^^**HEAVILY**^^ differs from the previous `INTERVAL` literals):
     Encouraged to read the [offical docs on SECOND](https://docs.oracle.com/database/121/SQLRF/sql_elements003.htm#SQLRF00221)
     
     Get ready for a mind-fuck
@@ -98,7 +203,7 @@ the exam.
         * `#!sql 123456789 SECONDS(9)` will work
         * `#!sql 000000012 SECONDS(2)` will work. Zeros are "ignored" against precision
         * `#!sql 0000000012 SECONDS(2)` ^^won't^^ work. Soft limit on accepting 9 digits
-            * The exception to the soft limit of 9 digits is a string of ^^only zeros
+            * The exception to the soft limit of 9 digits is a string of ^^only^^ zeros
             ```sql
             --Allows 60 zeroes before returning bad datetime/interval value error
             SELECT INTERVAL '0000000000000000000000000000000000000000000000000000000000000' DAY(0) FROM DUAL;
@@ -147,7 +252,7 @@ the exam.
     
 General form is:
 
-`INTERVAL` quoted_number interval type
+`INTERVAL` `quoted_number` `interval type`
 
 
 !!! Success "Working Examples"

@@ -74,37 +74,37 @@ SELECT INTERVAL '9' DAY            A_,
 from dual;
 
 --DAY INTERVAL
-select INTERVAL '5' DAY                     as A, --Most Basic Example
-       INTERVAL '5' DAY(2)                  as A, --SAME as above but explicit precision
+select INTERVAL '5' DAY                                                                as A, --Most Basic Example
+       INTERVAL '5' DAY(2)                                                             as A, --SAME as above but explicit precision
 --        INTERVAL '566' DAY(9,3), -- ERR; Can't have scale param
 --        INTERVAL '4.7' DAY(9), --Err; Nothing with a decimal
-       INTERVAL '0' DAY(0)                  as B, --Zero is the Smallest possible DAY precision
-       length('0') none,
+       INTERVAL '0' DAY(0)                                                             as B, --Zero is the Smallest possible DAY precision
+       length('0')                                                                        none,
 --        INTERVAL '' DAY(0) as B, --Err; empty str not allowed
        INTERVAL '0000000000000000000000000000000000000000000000000000000000000' DAY(0) as C, --Near Unlimited Zeroes work
-       length('000000000000000000000000000000000000000000000000000000000000') as C, --Near Unlimited Zeroes work
-       INTERVAL '000000000000000000' DAY(2) as D, --Near Unlimited Zeroes work
-       INTERVAL '000000088' DAY                E, --Up to 9 Digits work with preceding zeros
-       INTERVAL '000012345' DAY(5)             F, --Up to 9 Digits work with preceding zeros
+       length('000000000000000000000000000000000000000000000000000000000000')          as C, --Near Unlimited Zeroes work
+       INTERVAL '000000000000000000' DAY(2)                                            as D, --Near Unlimited Zeroes work
+       INTERVAL '000000088' DAY                                                           E, --Up to 9 Digits work with preceding zeros
+       INTERVAL '000012345' DAY(5)                                                        F, --Up to 9 Digits work with preceding zeros
 --        INTERVAL 0 DAY, --Err; Can't use Number literal as interval
 --        INTERVAL '' DAY(1), --Err; Can't have an empty value
 --        INTERVAL '1' DAY(0), --Err; Precision too small
-       INTERVAL '113456789' DAY(9)          as G  -- 9 is the max value
+       INTERVAL '113456789' DAY(9)                                                     as G  -- 9 is the max value
 from dual;
 
-select INTERVAL '1234567' SECOND A, --Note Second uniquely
-       INTERVAL '6000001.1234567' SECOND B,
-       INTERVAL '1234567.123456789' SECOND C,
-       INTERVAL '6000001.123456789' SECOND B,
-       INTERVAL '600001.123456789' SECOND B,
-       INTERVAL '15.6789' SECOND(2,3) B,
-       INTERVAL '123456789.123456789' SECOND(9,9) B,
-       INTERVAL '0' SECOND(0) b,
+select INTERVAL '1234567' SECOND                         A, --Note Second uniquely
+       INTERVAL '6000001.1234567' SECOND                 B,
+       INTERVAL '1234567.123456789' SECOND               C,
+       INTERVAL '6000001.123456789' SECOND               B,
+       INTERVAL '600001.123456789' SECOND                B,
+       INTERVAL '15.6789' SECOND(2,3)                    B,
+       INTERVAL '123456789.123456789' SECOND(9,9)        B,
+       INTERVAL '0' SECOND(0)                            b,
 --        INTERVAL '0' DAY TO SECOND b,
        INTERVAL '11 10:09:08.123456789' DAY TO SECOND(9) I,
-       INTERVAL '30.12345' SECOND(2,4) C,
-       INTERVAL '0.123456789' SECOND(0,0) b,
-       INTERVAL '123456789.123456789' SECOND(9,0) b
+       INTERVAL '30.12345' SECOND(2,4)                   C,
+       INTERVAL '0.123456789' SECOND(0,0)                b,
+       INTERVAL '123456789.123456789' SECOND(9,0)        b
 from dual;
 
 
@@ -121,4 +121,21 @@ from dual;
 
 --Unintended
 
-select CAST('1234.1234' AS NUMBER(6,2)) from dual;
+select CAST('1234.1294' AS NUMBER(6, 2))
+from dual;
+
+select C
+
+select sysdate - cast('-1 0:0:0' as interval day to second)
+from dual;
+
+select '',
+--        ''' -- 3 is an error; the first two are a complete literal then an open literal is started
+
+       '"',
+       '''', -- the second escape the first inner quote
+       ' " " ' || null,
+       concat('', null),
+       ''''''
+
+from dual;

@@ -45,3 +45,57 @@ group by MGR;
 
 
 select * from emp;
+
+select mgr, empno,
+       count(*) over (partition by mgr) "MGR usage"
+from emp;
+
+select count(*)
+from emp;
+
+
+
+SELECT COUNT(*) "Total"
+  FROM employees;
+
+     Total
+----------
+       107
+
+SELECT COUNT(*) "Allstars"
+  FROM employees
+  WHERE commission_pct > 0;
+
+
+ Allstars
+---------
+       35
+
+SELECT COUNT(*) "Allstars", length(COMMISSION_PCT)
+FROM employees
+having length(COMMISSION_PCT) > 0
+group by length(COMMISSION_PCT);
+-- having length(COMMISSION_PCT) > 0 ;
+
+SELECT COUNT(commission_pct) "Count"
+  FROM employees;
+
+     Count
+----------
+        35
+
+SELECT COUNT(DISTINCT manager_id) "Managers"
+  FROM employees;
+
+  Managers
+----------
+        18
+
+
+select '''' quote_escapes
+from dual;
+
+select ' '' ' from dual;
+
+select ''' from dual;
+

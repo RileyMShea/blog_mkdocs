@@ -1,4 +1,6 @@
 site_name: MyBlog
+repo_name: 'RileyMShea/blog_mkdocs'
+repo_url: 'https://github.com/RileyMShea/blog_mkdocs'
 nav:
   - Home: index.md
   - About: about.md
