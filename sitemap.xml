@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-     <loc>None</loc>
-     <lastmod>2020-01-06</lastmod>
+     <loc>https://github.com/RileyMShea/blog_mkdocs/</loc>
+     <lastmod>2020-01-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2020-01-06</lastmod>
+     <loc>https://github.com/RileyMShea/blog_mkdocs/about/</loc>
+     <lastmod>2020-01-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2020-01-06</lastmod>
+     <loc>https://github.com/RileyMShea/blog_mkdocs/2019/oracle_12c_docker/</loc>
+     <lastmod>2020-01-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2020-01-06</lastmod>
+     <loc>https://github.com/RileyMShea/blog_mkdocs/2020/Oracle/Documentation_links/</loc>
+     <lastmod>2020-01-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2020-01-06</lastmod>
+     <loc>https://github.com/RileyMShea/blog_mkdocs/2020/Oracle/post_attempt_1_notes/</loc>
+     <lastmod>2020-01-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://github.com/RileyMShea/blog_mkdocs/2020/Django/Polls_tutorial/</loc>
+     <lastmod>2020-01-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
