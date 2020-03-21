@@ -1,3 +1,4 @@
 # About Me
 
-Here is some info about me
+
+I enjoy full stack development, and data science/analytics/engineering.

@@ -1,6 +1,21 @@
-site_name: MyBlog
-repo_name: 'RileyMShea/blog_mkdocs'
-repo_url: 'https://github.com/RileyMShea/blog_mkdocs'
+# Project information
+site_name: 'RileyMShea - Personal Site'
+site_description: 'Site for blog, guides, and projects'
+site_author: 'Riley Shea'
+site_url: 'https://github.com/RileyMShea/blog_mkdocs'
+
+# Repository
+#repo_name: 'RileyMShea/blog_mkdocs'
+#repo_url: 'https://github.com/RileyMShea/blog_mkdocs'
+
+# Copyright
+copyright: 'Copyright &copy; 2019 - 2020 Riley Shea'
+
+# custom css
+extra_css:
+    - css/extra.css
+
+# Navigation
 nav:
   - Home: index.md
   - About: about.md
@@ -10,6 +25,10 @@ nav:
       - Oracle:
           - "Documentation Links": 2020/Oracle/Documentation_links.md
           - "First attempt notes": 2020/Oracle/post_attempt_1_notes.md
+      - Django:
+          - "Django Polls Notes": 2020/Django/Polls_tutorial.md
+
+# Configuration
 theme:
   name: 'material'
   palette:
@@ -22,7 +41,10 @@ theme:
   language: 'en'
   feature:
     tabs: false
+
+#Customization
 extra:
+  disqus: 'rileymshea'
   social:
     - type: 'github'
       link: 'https://github.com/RileyMShea'
@@ -30,6 +52,8 @@ extra:
       link: 'https://www.linkedin.com/in/riley-s-04393667/'
 extra_javascript:
   - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
+
+# Extensions
 markdown_extensions:
   - admonition
   - codehilite:
@@ -39,7 +63,18 @@ markdown_extensions:
   - toc:
       permalink: true
       baselevel: 3
+  - plantuml_markdown:
+      server: 'http://www.plantuml.com/plantuml'  # PlantUML server, for remote rendering
+      format: 'png'
+      title: 'UML diagram'                        # default title (tooltip) for diagram images
+      alt: 'UML diagram image'                    # default `alt` attribute for diagram images
+#          classes: 'class1,class2'                    # default diagram classes
+  #        # other global options
+  #        cachedir: '/tmp'                            # set a non-empty value to enable caching
+  #        format: 'png'                               # default diagram image format
+#        priority: 30                              # plugin priority; the higher, the sooner will be applied (default 30)
 #  - pymdownx.arithmatex
+#  - pymdownx.plantuml_markdown
   - pymdownx.betterem:
       smart_enable: none
   - pymdownx.caret
@@ -60,7 +95,7 @@ plugins:
   - search
   - minify:
       minify_html: true
+  - git-revision-date-localized:
+      type: timeago
 #  - pheasant
-#  - git-revision-date-localized
-#  type: timeago
 #  locale: en

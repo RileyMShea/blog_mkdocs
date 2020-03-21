@@ -104,6 +104,14 @@ version = "0.1.12"
 
 [[package]]
 category = "main"
+description = "A comprehensive HTTP client library."
+name = "httplib2"
+optional = false
+python-versions = "*"
+version = "0.15.0"
+
+[[package]]
+category = "main"
 description = "File identification library for Python"
 name = "identify"
 optional = false
@@ -395,6 +403,29 @@ version = "0.7.5"
 
 [[package]]
 category = "main"
+description = ""
+name = "plantuml"
+optional = false
+python-versions = "*"
+version = "0.3.0"
+
+[package.dependencies]
+httplib2 = "*"
+
+[[package]]
+category = "main"
+description = "A PlantUML plugin for Markdown"
+name = "plantuml-markdown"
+optional = false
+python-versions = "*"
+version = "3.2.1"
+
+[package.dependencies]
+Markdown = "*"
+plantuml = "*"
+
+[[package]]
+category = "main"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 name = "pre-commit"
 optional = false
@@ -572,7 +603,7 @@ python-versions = "*"
 version = "0.1.7"
 
 [metadata]
-content-hash = "b0cb050f8fc0255fa2d4e95fdba355a8f108e965ff8206a069dcd12fb4a0e3b5"
+content-hash = "41c302c9e319d442d2de01b8ded8fa5f27e9a43d6e2359f7f8e7f076b9fb3e43"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -618,6 +649,10 @@ gitpython = [
 ]
 htmlmin = [
     {file = "htmlmin-0.1.12.tar.gz", hash = "sha256:50c1ef4630374a5d723900096a961cff426dff46b48f34d194a81bbe14eca178"},
+]
+httplib2 = [
+    {file = "httplib2-0.15.0-py3-none-any.whl", hash = "sha256:1d1f4ad7a6e55d325830ab274190f98894e069850a871fac19921caf4363259d"},
+    {file = "httplib2-0.15.0.tar.gz", hash = "sha256:a5f914f18f99cb9541660454a159e3b3c63241fc3ab60005bb88d97cc7a4fb58"},
 ]
 identify = [
     {file = "identify-1.4.9-py2.py3-none-any.whl", hash = "sha256:72e9c4ed3bc713c7045b762b0d2e2115c572b85abfc1f4604f5a4fd4c6642b71"},
@@ -730,6 +765,13 @@ pheasant = [
 pickleshare = [
     {file = "pickleshare-0.7.5-py2.py3-none-any.whl", hash = "sha256:9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56"},
     {file = "pickleshare-0.7.5.tar.gz", hash = "sha256:87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca"},
+]
+plantuml = [
+    {file = "plantuml-0.3.0-py3-none-any.whl", hash = "sha256:f21789bc4abc3e8888d23a8fa010e942989f1a73d6e50e10a54688cbee52aa1c"},
+]
+plantuml-markdown = [
+    {file = "plantuml_markdown-3.2.1-py2-none-any.whl", hash = "sha256:103413cf43f466251ebe2a3c779eea39b0c6a0163761ae5d77bb5cb760d80e93"},
+    {file = "plantuml_markdown-3.2.1-py3-none-any.whl", hash = "sha256:c5183ce1847a638caa4e143284321e4f0212ec6e666f967893d25ef0cef4a7b1"},
 ]
 pre-commit = [
     {file = "pre_commit-1.20.0-py2.py3-none-any.whl", hash = "sha256:c2e4810d2d3102d354947907514a78c5d30424d299dc0fe48f5aa049826e9b50"},
